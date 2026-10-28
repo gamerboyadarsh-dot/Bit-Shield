@@ -1,0 +1,26 @@
+{
+  "name": "bitshield-hamming74",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.1.0",
+    "vite-plugin-singlefile": "^2.1.0",
+    "vitest": "^3.0.5"
+  }
+}
