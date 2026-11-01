@@ -45,10 +45,10 @@ export function Navbar({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          backdropFilter: 'blur(28px)',
+          WebkitBackdropFilter: 'blur(28px)',
           border: '1px solid var(--border-card)',
-          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.36)'
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.36), 0 1px 0 rgba(255,255,255,0.08) inset'
         }}
       >
         {/* Brand / Logo */}
@@ -182,7 +182,7 @@ export function Navbar({
                   padding: '0.45rem 0.95rem',
                   background: 'none',
                   border: 'none',
-                  color: isActive ? '#ffffff' : 'var(--text-muted)',
+                  color: isActive ? '#ffffff' : 'rgba(148, 163, 184, 0.9)',
                   fontSize: '0.85rem',
                   fontWeight: isActive ? 650 : 500,
                   cursor: 'pointer',
@@ -202,7 +202,7 @@ export function Navbar({
                       inset: 0,
                       borderRadius: 'var(--radius-full)',
                       background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-                      boxShadow: '0 2px 12px -2px rgba(99, 102, 241, 0.5)',
+                      boxShadow: '0 2px 16px -2px rgba(99, 102, 241, 0.7), 0 0 8px rgba(99, 102, 241, 0.4)',
                       zIndex: -1
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}

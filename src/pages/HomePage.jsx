@@ -292,18 +292,18 @@ export function HomePage({ onNavigate }) {
             <div>
               <h1
                 style={{
-                  fontSize: 'clamp(2.75rem, 6vw, 4.25rem)',
+                  fontSize: 'clamp(3rem, 7vw, 5rem)',
                   fontWeight: 850,
-                  letterSpacing: '-0.04em',
-                  lineHeight: 1.05,
+                  letterSpacing: '-0.045em',
+                  lineHeight: 1.03,
                   margin: 0
                 }}
               >
-                Bit<span className="gradient-text-accent">Shield</span>
+                Bit<span className="shimmer-text">Shield</span>
               </h1>
               <div
                 style={{
-                  fontSize: 'clamp(1.15rem, 2.2vw, 1.45rem)',
+                  fontSize: 'clamp(1.25rem, 2.5vw, 1.6rem)',
                   fontWeight: 550,
                   color: 'var(--text-muted)',
                   marginTop: '0.85rem',
@@ -386,12 +386,13 @@ export function HomePage({ onNavigate }) {
               }}
             >
               <motion.div
-                whileHover={{ y: -3 }}
-                className="glass-l1"
+                whileHover={{ y: -4, boxShadow: '0 0 28px rgba(34,211,238,0.45), 0 8px 24px rgba(0,0,0,0.3)' }}
+                className="glass-l1 stat-card-glow"
                 style={{
                   padding: '0.85rem 1rem',
                   borderRadius: 'var(--radius-md)',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  border: '1px solid rgba(34,211,238,0.4)'
                 }}
               >
                 <div style={{ fontSize: '1.45rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="gradient-text-cyan">
@@ -403,12 +404,13 @@ export function HomePage({ onNavigate }) {
               </motion.div>
 
               <motion.div
-                whileHover={{ y: -3 }}
-                className="glass-l1"
+                whileHover={{ y: -4, boxShadow: '0 0 28px rgba(99,102,241,0.45), 0 8px 24px rgba(0,0,0,0.3)' }}
+                className="glass-l1 stat-card-glow"
                 style={{
                   padding: '0.85rem 1rem',
                   borderRadius: 'var(--radius-md)',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  border: '1px solid rgba(99,102,241,0.4)'
                 }}
               >
                 <div style={{ fontSize: '1.45rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="gradient-text-accent">
@@ -420,12 +422,13 @@ export function HomePage({ onNavigate }) {
               </motion.div>
 
               <motion.div
-                whileHover={{ y: -3 }}
-                className="glass-l1"
+                whileHover={{ y: -4, boxShadow: '0 0 28px rgba(251,191,36,0.45), 0 8px 24px rgba(0,0,0,0.3)' }}
+                className="glass-l1 stat-card-glow"
                 style={{
                   padding: '0.85rem 1rem',
                   borderRadius: 'var(--radius-md)',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  border: '1px solid rgba(251,191,36,0.4)'
                 }}
               >
                 <div style={{ fontSize: '1.45rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="gradient-text-amber">
@@ -460,16 +463,20 @@ export function HomePage({ onNavigate }) {
                 title="Interactive Live Sandbox"
                 subtitle="Click any bit below to inject channel noise and observe real-time syndrome resolution."
                 action={
-                  corruptedPos !== null && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      icon={RotateCcw}
-                      onClick={() => setCorruptedPos(null)}
-                    >
-                      Reset Bit
-                    </Button>
-                  )
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className="live-dot" aria-hidden="true" />
+                    <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: 'var(--accent-emerald)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>LIVE</span>
+                    {corruptedPos !== null && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        icon={RotateCcw}
+                        onClick={() => setCorruptedPos(null)}
+                      >
+                        Reset Bit
+                      </Button>
+                    )}
+                  </div>
                 }
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', alignItems: 'center' }}>
@@ -610,15 +617,31 @@ export function HomePage({ onNavigate }) {
                 whileHover={{ y: -4 }}
                 className="glass-l1"
                 style={{
-                  padding: '1.35rem 1.25rem',
+                  padding: '1.5rem 1.35rem',
                   borderRadius: 'var(--radius-lg)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '0.75rem',
+                  gap: '0.85rem',
                   border: `1.5px solid ${node.color}`,
-                  boxShadow: node.glow
+                  boxShadow: node.glow,
+                  borderTop: `3px solid ${node.color}`,
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
+                {/* Colored top accent bar */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '3px',
+                    background: node.color,
+                    boxShadow: node.glow,
+                    borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0'
+                  }}
+                />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span
                     style={{
@@ -632,17 +655,18 @@ export function HomePage({ onNavigate }) {
                   </span>
                   <div
                     style={{
-                      width: '32px',
-                      height: '32px',
+                      width: '38px',
+                      height: '38px',
                       borderRadius: 'var(--radius-sm)',
                       background: node.bg,
                       color: node.color,
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
+                      boxShadow: node.glow
                     }}
                   >
-                    <Icon size={18} strokeWidth={2} />
+                    <Icon size={20} strokeWidth={2} />
                   </div>
                 </div>
 

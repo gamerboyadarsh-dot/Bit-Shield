@@ -93,6 +93,7 @@ export function App() {
         <div className="aurora-blob-1" />
         <div className="aurora-blob-2" />
         <div className="aurora-blob-3" />
+        <div className="aurora-blob-4" />
       </div>
 
       {/* Desktop Cursor Glow */}
@@ -106,7 +107,7 @@ export function App() {
           width: '320px',
           height: '320px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(34, 211, 238, 0.05) 50%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(34, 211, 238, 0.08) 50%, transparent 70%)',
           pointerEvents: 'none',
           zIndex: 2,
           filter: 'blur(30px)',

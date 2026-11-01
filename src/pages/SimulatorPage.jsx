@@ -324,7 +324,7 @@ export function SimulatorPage() {
                       key={i}
                       type="button"
                       onClick={() => handleToggleClick(i)}
-                      whileHover={{ scale: 1.06, y: -2 }}
+                      whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.94 }}
                       style={{
                         width: '72px',
@@ -336,7 +336,7 @@ export function SimulatorPage() {
                           : 'var(--bg-glass-input)',
                         color: b ? '#ffffff' : 'var(--text-muted)',
                         boxShadow: b
-                          ? '0 0 24px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255,255,255,0.4)'
+                          ? '0 0 32px rgba(99, 102, 241, 0.7), 0 0 12px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.4)'
                           : 'var(--shadow-sm)',
                         fontFamily: 'var(--font-mono)',
                         fontSize: '1.75rem',
@@ -347,11 +347,12 @@ export function SimulatorPage() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '0.15rem'
+                        gap: '0.15rem',
+                        transition: 'border-color 0.15s, background 0.15s, box-shadow 0.15s'
                       }}
                       aria-label={`Message bit m${i + 1}, currently ${b}, click to toggle`}
                     >
-                      <span>{b}</span>
+                      <span style={b ? { textShadow: '0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(165,180,252,0.7)' } : {}}>{b}</span>
                       <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: b ? '#e0e7ff' : 'var(--text-subtle)', fontWeight: 700 }}>
                         m{i + 1}
                       </span>
