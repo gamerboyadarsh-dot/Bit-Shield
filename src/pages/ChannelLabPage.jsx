@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Radio, RefreshCw, Send, CheckCircle2, AlertTriangle, ShieldAlert, BarChart3, Activity, Cpu, Sliders } from 'lucide-react';
+import { Radio, RefreshCw, Send, CheckCircle2, AlertTriangle, ShieldAlert, BarChart3, Activity, Cpu, Sliders, Sparkles } from 'lucide-react';
 import { Card } from '../components/Card.jsx';
 import { Button } from '../components/Button.jsx';
 import { Badge } from '../components/Badge.jsx';
@@ -123,15 +123,14 @@ export function ChannelLabPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
       {/* Header */}
       <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-          <span className="mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Transmission Laboratory
-          </span>
-        </div>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
+        <span className="eyebrow-label">
+          <Sparkles size={12} className="gradient-text-accent" />
+          <span className="gradient-text-accent">NOISY CHANNEL SIMULATION</span>
+        </span>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 850, letterSpacing: '-0.035em', color: 'var(--text-main)', margin: '0.2rem 0 0.35rem 0' }}>
           Channel Noise &amp; Statistical Lab
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '0.25rem', margin: '0.25rem 0 0 0' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', margin: 0 }}>
           Simulate transmission across a noisy Binary Symmetric Channel (BSC), inspect ASCII text recovery, and run large-scale Monte Carlo trials.
         </p>
       </div>
@@ -146,17 +145,17 @@ export function ChannelLabPage() {
           <div
             style={{
               display: 'flex',
-              gap: '1.25rem',
+              gap: '1.5rem',
               alignItems: 'flex-end',
               flexWrap: 'wrap',
-              background: 'var(--bg-card-subtle)',
-              padding: '1.25rem',
+              background: 'var(--bg-glass-input)',
+              padding: '1.35rem',
               borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border-subtle)'
+              border: '1px solid var(--border-glow)'
             }}
           >
-            <div style={{ flex: '1', minWidth: '180px' }}>
-              <label htmlFor="ascii-input" style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.45rem' }}>
+            <div style={{ flex: '1', minWidth: '200px' }}>
+              <label htmlFor="ascii-input" style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.45rem' }}>
                 Text Payload
               </label>
               <input
@@ -167,25 +166,25 @@ export function ChannelLabPage() {
                 maxLength={16}
                 style={{
                   width: '100%',
-                  padding: '0.6rem 0.95rem',
+                  padding: '0.65rem 1rem',
                   borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border-card)',
-                  background: 'var(--bg-glass-input)',
+                  border: '1.5px solid var(--border-card)',
+                  background: 'var(--bg-card-subtle)',
                   color: 'var(--text-main)',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '1rem',
-                  fontWeight: 700,
+                  fontSize: '1.05rem',
+                  fontWeight: 800,
                   outline: 'none'
                 }}
               />
             </div>
 
-            <div style={{ minWidth: '220px', flex: '1' }}>
+            <div style={{ minWidth: '240px', flex: '1' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Channel Crossover Prob (p)
                 </span>
-                <span className="mono tabular-nums" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--accent-rose)' }}>
+                <span className="mono tabular-nums" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-rose)' }}>
                   {(textErrorRate * 100).toFixed(1)}%
                 </span>
               </div>
@@ -206,6 +205,7 @@ export function ChannelLabPage() {
 
             <Button
               variant="primary"
+              size="lg"
               icon={Send}
               onClick={handleTransmitText}
             >
@@ -223,65 +223,65 @@ export function ChannelLabPage() {
           >
             {/* Original */}
             <div
-              className="glass-panel"
+              className="glass-l1"
               style={{
-                padding: '1.25rem',
+                padding: '1.35rem',
                 borderRadius: 'var(--radius-md)',
                 background: 'var(--bg-card-subtle)',
                 border: '1px solid var(--border-subtle)'
               }}
             >
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                 Transmitted Payload
               </span>
-              <div className="mono" style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)', marginTop: '0.35rem' }}>
+              <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 850, color: 'var(--text-main)', marginTop: '0.35rem' }}>
                 {inputText}
               </div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)', marginTop: '0.25rem', display: 'block' }}>
+              <span style={{ fontSize: '0.825rem', color: 'var(--text-subtle)', marginTop: '0.25rem', display: 'block' }}>
                 {inputText.length * 2} Hamming codewords ({inputText.length * 14} bits)
               </span>
             </div>
 
             {/* Corrupted Channel */}
             <div
-              className="glass-panel"
+              className="glass-l1"
               style={{
-                padding: '1.25rem',
+                padding: '1.35rem',
                 borderRadius: 'var(--radius-md)',
                 background: 'var(--bit-corrupt-bg)',
                 border: '1px solid var(--bit-corrupt-border)',
                 boxShadow: 'var(--bit-corrupt-glow)'
               }}
             >
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--bit-corrupt-text)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--bit-corrupt-text)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                 Noise-Corrupted Channel
               </span>
-              <div className="mono" style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--bit-corrupt-text)', marginTop: '0.35rem' }}>
+              <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 850, color: 'var(--bit-corrupt-text)', marginTop: '0.35rem' }}>
                 {textSimulation.decoded.rawErrors} bit flips introduced
               </div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--bit-corrupt-text)', marginTop: '0.25rem', display: 'block' }}>
+              <span style={{ fontSize: '0.825rem', color: 'var(--bit-corrupt-text)', marginTop: '0.25rem', display: 'block' }}>
                 Raw BER: {(textSimulation.decoded.rawBer * 100).toFixed(1)}%
               </span>
             </div>
 
             {/* Recovered */}
             <div
-              className="glass-panel"
+              className="glass-l1"
               style={{
-                padding: '1.25rem',
+                padding: '1.35rem',
                 borderRadius: 'var(--radius-md)',
                 background: 'var(--status-success-bg)',
                 border: '1px solid var(--status-success-border)',
                 boxShadow: 'var(--bit-corrected-glow)'
               }}
             >
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--status-success-text)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--status-success-text)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                 Decoded &amp; Restored Text
               </span>
-              <div className="mono" style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--status-success-text)', marginTop: '0.35rem' }}>
+              <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 850, color: 'var(--status-success-text)', marginTop: '0.35rem' }}>
                 {textSimulation.decoded.text}
               </div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--status-success-text)', marginTop: '0.25rem', display: 'block' }}>
+              <span style={{ fontSize: '0.825rem', color: 'var(--status-success-text)', marginTop: '0.25rem', display: 'block' }}>
                 {textSimulation.decoded.remainingErrors === 0 ? '✓ 100% Perfectly Restored' : `${textSimulation.decoded.remainingErrors} residual bit errors`}
               </span>
             </div>
@@ -289,8 +289,10 @@ export function ChannelLabPage() {
         </div>
       </Card>
 
-      {/* FEATURE 2: BSC Monte Carlo Statistical Channel */}
+      {/* FEATURE 2: BSC Monte Carlo Statistical Channel (Level 2 Hero Card) */}
       <Card
+        level={2}
+        halo={true}
         title="2. Binary Symmetric Channel (BSC) Monte Carlo Simulation"
         subtitle="Empirical statistical testing across large batches of random transmissions."
       >
@@ -301,18 +303,18 @@ export function ChannelLabPage() {
               gap: '1.5rem',
               alignItems: 'flex-end',
               flexWrap: 'wrap',
-              background: 'var(--bg-card-subtle)',
-              padding: '1.25rem',
+              background: 'var(--bg-glass-input)',
+              padding: '1.35rem',
               borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border-subtle)'
+              border: '1px solid var(--border-glow)'
             }}
           >
-            <div style={{ flex: '1', minWidth: '220px' }}>
+            <div style={{ flex: '1', minWidth: '240px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Bit-Flip Probability (p)
                 </span>
-                <span className="mono tabular-nums" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--accent-rose)' }}>
+                <span className="mono tabular-nums" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-rose)' }}>
                   {(monteCarloP * 100).toFixed(1)}%
                 </span>
               </div>
@@ -327,8 +329,8 @@ export function ChannelLabPage() {
               />
             </div>
 
-            <div style={{ minWidth: '180px' }}>
-              <label htmlFor="batch-select" style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.45rem' }}>
+            <div style={{ minWidth: '190px' }}>
+              <label htmlFor="batch-select" style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.45rem' }}>
                 Batch Size
               </label>
               <select
@@ -337,13 +339,13 @@ export function ChannelLabPage() {
                 onChange={(e) => setPacketCount(Number(e.target.value))}
                 style={{
                   width: '100%',
-                  padding: '0.55rem 0.85rem',
+                  padding: '0.65rem 0.95rem',
                   borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border-card)',
-                  background: 'var(--bg-glass-input)',
+                  border: '1.5px solid var(--border-card)',
+                  background: 'var(--bg-card-subtle)',
                   color: 'var(--text-main)',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
+                  fontSize: '0.925rem',
+                  fontWeight: 700,
                   outline: 'none'
                 }}
               >
@@ -355,6 +357,7 @@ export function ChannelLabPage() {
 
             <Button
               variant="primary"
+              size="lg"
               icon={RefreshCw}
               onClick={runMonteCarlo}
               disabled={isSimulating}
@@ -378,72 +381,72 @@ export function ChannelLabPage() {
                   gap: '1rem'
                 }}
               >
-                <div className="glass-panel" style={{ padding: '1.15rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-card-subtle)' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <div className="glass-l1" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-glass-input)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                     Channel Bit Error Rate
                   </span>
-                  <div className="mono tabular-nums" style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--bit-corrupt-text)', marginTop: '0.25rem' }}>
+                  <div className="mono tabular-nums" style={{ fontSize: '1.55rem', fontWeight: 850, color: 'var(--bit-corrupt-text)', marginTop: '0.25rem' }}>
                     {monteCarloStats.rawBer.toFixed(2)}%
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>({monteCarloStats.rawBitFlips} flips in {monteCarloStats.totalBits} bits)</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)' }}>({monteCarloStats.rawBitFlips} flips in {monteCarloStats.totalBits} bits)</span>
                 </div>
 
-                <div className="glass-panel" style={{ padding: '1.15rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-card-subtle)' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <div className="glass-l1" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-glass-input)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                     Post-Decoding BER
                   </span>
-                  <div className="mono tabular-nums" style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--status-success-text)', marginTop: '0.25rem' }}>
+                  <div className="mono tabular-nums" style={{ fontSize: '1.55rem', fontWeight: 850, color: 'var(--status-success-text)', marginTop: '0.25rem' }}>
                     {monteCarloStats.postBer.toFixed(2)}%
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>({monteCarloStats.remainingBitFlips} residual errors)</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)' }}>({monteCarloStats.remainingBitFlips} residual errors)</span>
                 </div>
 
-                <div className="glass-panel" style={{ padding: '1.15rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-card-subtle)' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <div className="glass-l1" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-glass-input)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                     Single Errors Fixed
                   </span>
-                  <div className="mono tabular-nums" style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--status-success-text)', marginTop: '0.25rem' }}>
+                  <div className="mono tabular-nums" style={{ fontSize: '1.55rem', fontWeight: 850, color: 'var(--status-success-text)', marginTop: '0.25rem' }}>
                     {monteCarloStats.singleErrorWords}
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>100% successfully fixed</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)' }}>100% successfully fixed</span>
                 </div>
 
-                <div className="glass-panel" style={{ padding: '1.15rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-card-subtle)' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <div className="glass-l1" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-glass-input)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                     Double Miscorrections
                   </span>
-                  <div className="mono tabular-nums" style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--status-danger-text)', marginTop: '0.25rem' }}>
+                  <div className="mono tabular-nums" style={{ fontSize: '1.55rem', fontWeight: 850, color: 'var(--status-danger-text)', marginTop: '0.25rem' }}>
                     {monteCarloStats.miscorrectedWords}
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>Decoded to wrong codeword</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)' }}>Decoded to wrong codeword</span>
                 </div>
               </div>
 
               {/* Visual Distribution Bar */}
               <div
-                className="glass-panel"
+                className="glass-l1"
                 style={{
-                  padding: '1.25rem',
+                  padding: '1.35rem',
                   borderRadius: 'var(--radius-md)',
-                  background: 'var(--bg-card-subtle)',
+                  background: 'var(--bg-glass-input)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '0.75rem'
+                  gap: '0.85rem'
                 }}
               >
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Codeword Outcome Distribution ({monteCarloStats.packetCount} Packets)
                 </span>
                 
                 {/* Segmented Distribution Bar */}
                 <div
                   style={{
-                    height: '24px',
+                    height: '26px',
                     width: '100%',
                     borderRadius: 'var(--radius-sm)',
                     overflow: 'hidden',
                     display: 'flex',
-                    background: 'var(--bg-glass-input)',
+                    background: 'var(--bg-card-subtle)',
                     border: '1px solid var(--border-subtle)'
                   }}
                 >
@@ -482,22 +485,22 @@ export function ChannelLabPage() {
                 </div>
 
                 {/* Bar Legend */}
-                <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <span style={{ width: '8px', height: '8px', background: 'var(--status-success-border)', borderRadius: '2px' }} />
+                <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ width: '9px', height: '9px', background: 'var(--status-success-border)', borderRadius: '2px' }} />
                     Clean ({monteCarloStats.cleanWords})
                   </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <span style={{ width: '8px', height: '8px', background: 'var(--accent-cyan)', borderRadius: '2px' }} />
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ width: '9px', height: '9px', background: 'var(--accent-cyan)', borderRadius: '2px' }} />
                     Single Fixed ({monteCarloStats.singleErrorWords})
                   </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <span style={{ width: '8px', height: '8px', background: 'var(--status-danger-border)', borderRadius: '2px' }} />
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ width: '9px', height: '9px', background: 'var(--status-danger-border)', borderRadius: '2px' }} />
                     Miscorrected ({monteCarloStats.miscorrectedWords})
                   </span>
                   {monteCarloStats.undetectedWords > 0 && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <span style={{ width: '8px', height: '8px', background: 'var(--accent-amber)', borderRadius: '2px' }} />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <span style={{ width: '9px', height: '9px', background: 'var(--accent-amber)', borderRadius: '2px' }} />
                       Undetected ({monteCarloStats.undetectedWords})
                     </span>
                   )}

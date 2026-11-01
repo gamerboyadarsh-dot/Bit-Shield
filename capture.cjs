@@ -6,7 +6,7 @@ const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 function capture(url, outputPath, width = 1280, height = 900) {
   const fullPath = path.resolve(outputPath);
-  const cmd = `"${CHROME}" --headless --disable-gpu --window-size=${width},${height} --screenshot="${fullPath}" "${url}"`;
+  const cmd = `"${CHROME}" --headless --disable-gpu --virtual-time-budget=2000 --window-size=${width},${height} --screenshot="${fullPath}" "${url}"`;
   execSync(cmd, { stdio: 'ignore' });
   if (fs.existsSync(fullPath)) {
     const stat = fs.statSync(fullPath);
