@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { PARITY_CHECKS, POSITIONS_META } from '../lib/hamming.js';
 
 export function ParityGroups({
@@ -24,8 +25,8 @@ export function ParityGroups({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.375rem',
-          maxWidth: size === 'lg' ? '600px' : size === 'sm' ? '380px' : '480px',
+          gap: '0.45rem',
+          maxWidth: size === 'lg' ? '680px' : size === 'sm' ? '420px' : '560px',
           width: '100%'
         }}
         role="table"
@@ -42,12 +43,13 @@ export function ParityGroups({
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
-                gap: size === 'sm' ? '0.375rem' : '0.625rem',
+                gap: size === 'sm' ? '0.35rem' : size === 'lg' ? '0.85rem' : '0.6rem',
                 alignItems: 'center',
-                padding: '0.125rem 0',
-                borderRadius: 'var(--radius-sm)',
+                padding: '0.3rem 0',
+                borderRadius: 'var(--radius-md)',
                 background: isCheckActive ? 'var(--accent-light)' : 'transparent',
-                transition: 'background-color 0.15s ease'
+                border: isCheckActive ? '1px solid var(--border-glow)' : '1px solid transparent',
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
               onMouseEnter={() => onCheckHover && onCheckHover(check.id)}
               onMouseLeave={() => onCheckHover && onCheckHover(null)}
@@ -59,30 +61,47 @@ export function ParityGroups({
 
                 return (
                   <div
-                    key={`${check.id}-${pos}`}
+                    key={pos}
                     role="cell"
                     style={{
-                      height: size === 'sm' ? '18px' : '22px',
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: 'var(--radius-sm)',
-                      background: isCovered
-                        ? isCheckActive || isCellHovered
-                          ? 'var(--accent)'
-                          : 'var(--border-strong)'
-                        : 'transparent',
-                      color: isCovered ? '#ffffff' : 'var(--text-subtle)',
-                      fontSize: '0.6875rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontWeight: 600,
-                      opacity: isCovered ? 1 : 0.25,
-                      border: isCovered ? '1px solid transparent' : '1px dashed var(--border-subtle)',
-                      transition: 'all 0.15s ease'
+                      height: '24px'
                     }}
-                    title={`${check.name} covers pos ${pos} (${meta.name})`}
                   >
-                    {isCovered ? check.name : '—'}
+                    {isCovered ? (
+                      <motion.div
+                        animate={{
+                          scale: isCellHovered || isCheckActive ? 1.25 : 1
+                        }}
+                        style={{
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          background: isCellHovered
+                            ? 'var(--accent-cyan)'
+                            : isCheckActive
+                            ? 'var(--accent)'
+                            : 'var(--text-subtle)',
+                          boxShadow: isCellHovered || isCheckActive ? '0 0 10px var(--accent-cyan)' : 'none',
+                          opacity: isCovered ? 1 : 0.2,
+                          transition: 'background-color 0.2s ease, box-shadow 0.2s ease'
+                        }}
+                        title={`Check ${check.name} monitors position ${pos}`}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: 'var(--border-subtle)',
+                          opacity: 0.4
+                        }}
+                      />
+                    )}
                   </div>
                 );
               })}
@@ -90,22 +109,8 @@ export function ParityGroups({
           );
         })}
       </div>
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          maxWidth: size === 'lg' ? '600px' : size === 'sm' ? '380px' : '480px',
-          width: '100%',
-          marginTop: '0.5rem',
-          padding: '0 0.25rem',
-          fontSize: '0.75rem',
-          color: 'var(--text-subtle)'
-        }}
-      >
-        <span>Coverage: S₁ (odd pos), S₂ (2,3,6,7), S₄ (4,5,6,7)</span>
-        <span>Hover check to highlight</span>
-      </div>
     </div>
   );
 }
+
+export default ParityGroups;

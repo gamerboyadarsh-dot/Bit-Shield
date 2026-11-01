@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight, CheckCircle2, Sparkles, Layers } from 'lucide-react';
 import { Card } from '../components/Card.jsx';
 import { Button } from '../components/Button.jsx';
 import { Codeword } from '../components/Codeword.jsx';
@@ -38,7 +39,7 @@ export function DemoPage() {
     {
       num: 1,
       title: '1. Message Ingestion (1011)',
-      desc: 'The user provides 4 data bits: m₁=1, m₂=0, m₃=1, m₄=1.',
+      desc: 'The transmitter accepts 4 information bits: m₁=1, m₂=0, m₃=1, m₄=1.',
       getBits: () => [0, 0, 1, 0, 0, 1, 1], // only data bits set initially in positions 3,5,6,7
       corrupted: [],
       corrected: [],
@@ -83,7 +84,7 @@ export function DemoPage() {
     {
       num: 6,
       title: '6. Autonomous In-Place Bit Inversion',
-      desc: 'The decoder inverts bit 6 from 0 back to 1.',
+      desc: 'The decoder inverts bit 6 from 0 back to 1 without retransmission.',
       getBits: () => correctedWord,
       corrupted: [],
       corrected: [6],
@@ -122,20 +123,25 @@ export function DemoPage() {
   }, [isPlaying]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
       {/* Header */}
       <div>
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+          <span className="mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Cinematic Walkthrough
+          </span>
+        </div>
+        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
           Guided Demonstration
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginTop: '0.25rem' }}>
-          Step-by-step walkthrough of the canonical textbook case (Message 1011 corrupted at position 6).
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '0.25rem', margin: '0.25rem 0 0 0' }}>
+          Step-by-step walkthrough of the canonical textbook case: Message 1011 corrupted at position 6.
         </p>
       </div>
 
       {/* Control Bar & Progress */}
       <Card>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Button
               variant="secondary"
@@ -161,7 +167,7 @@ export function DemoPage() {
               Previous
             </Button>
             <Button
-              variant="primary"
+              variant={isPlaying ? 'secondary' : 'primary'}
               size="sm"
               icon={isPlaying ? Pause : Play}
               onClick={() => setIsPlaying(!isPlaying)}
@@ -183,25 +189,27 @@ export function DemoPage() {
             </Button>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontSize: '0.875rem', color: 'var(--text-subtle)', fontWeight: 500 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
               Step {currentStep} of 7
             </span>
             <div
               style={{
-                width: '120px',
-                height: '6px',
-                background: 'var(--border-subtle)',
+                width: '140px',
+                height: '8px',
+                background: 'var(--bg-glass-input)',
                 borderRadius: 'var(--radius-full)',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                border: '1px solid var(--border-subtle)'
               }}
             >
-              <div
+              <motion.div
+                animate={{ width: `${(currentStep / 7) * 100}%` }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 style={{
-                  width: `${(currentStep / 7) * 100}%`,
                   height: '100%',
-                  background: 'var(--accent)',
-                  transition: 'width 0.2s ease'
+                  background: 'linear-gradient(90deg, #6366f1, #22d3ee)',
+                  boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)'
                 }}
               />
             </div>
@@ -214,131 +222,143 @@ export function DemoPage() {
         title={currentMeta.title}
         subtitle={currentMeta.desc}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center' }}>
-          {/* Interactive Codeword for the current step */}
-          <Codeword
-            bits={currentMeta.getBits()}
-            corruptedPositions={currentMeta.corrupted}
-            correctedPositions={currentMeta.corrected}
-            size="lg"
-          />
-
-          {/* Parity Groups projection */}
-          <ParityGroups
-            activeCheck={currentMeta.highlightCheck}
-            size="lg"
-          />
-
-          {/* Step-Specific Mathematical Explanation Box */}
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '680px',
-              padding: '1.25rem',
-              borderRadius: 'var(--radius-md)',
-              background: 'var(--bg-card-subtle)',
-              border: '1px solid var(--border-subtle)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.75rem'
-            }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center' }}
           >
-            {currentStep === 1 && (
-              <div>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-main)' }}>
-                  Message bits <code>1 0 1 1</code> are assigned to data positions <code>d₃, d₅, d₆, d₇</code>. Parity coordinates <code>p₁, p₂, p₄</code> await calculation.
-                </p>
-              </div>
-            )}
+            {/* Interactive Codeword for the current step */}
+            <Codeword
+              bits={currentMeta.getBits()}
+              corruptedPositions={currentMeta.corrupted}
+              correctedPositions={currentMeta.corrected}
+              size="lg"
+            />
 
-            {currentStep === 2 && (
-              <div>
-                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase' }}>
-                  Computed Parities
-                </span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem' }}>
-                  {parities.map((p) => (
-                    <div key={p.bit} className="mono tabular-nums" style={{ fontSize: '0.875rem' }}>
-                      {p.expression}
-                    </div>
-                  ))}
+            {/* Parity Groups projection */}
+            <ParityGroups
+              activeCheck={currentMeta.highlightCheck}
+              size="lg"
+            />
+
+            {/* Step-Specific Mathematical Explanation Box */}
+            <div
+              className="glass-panel"
+              style={{
+                width: '100%',
+                maxWidth: '680px',
+                padding: '1.5rem',
+                borderRadius: 'var(--radius-md)',
+                background: 'var(--bg-card-subtle)',
+                border: '1px solid var(--border-subtle)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.85rem'
+              }}
+            >
+              {currentStep === 1 && (
+                <div>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', margin: 0, lineHeight: 1.6 }}>
+                    Message bits <code className="mono">1 0 1 1</code> are assigned to data positions <code className="mono">d₃, d₅, d₆, d₇</code>. Parity coordinates <code className="mono">p₁, p₂, p₄</code> await calculation.
+                  </p>
                 </div>
-                <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                  Synthesized 7-bit codeword: <strong className="mono">0110011</strong>.
-                </p>
-              </div>
-            )}
+              )}
 
-            {currentStep === 3 && (
-              <div>
-                <Badge variant="danger" style={{ marginBottom: '0.5rem' }}>
-                  Noise Corruption Introduced
-                </Badge>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-main)' }}>
-                  Bit 6 flipped from <code>1</code> to <code>0</code>. The received word transmitted to the decoder is <code className="mono">0110001</code>.
-                </p>
-              </div>
-            )}
-
-            {currentStep === 4 && (
-              <div>
-                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-subtle)', textTransform: 'uppercase' }}>
-                  Syndrome Checks on Received Word
-                </span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem' }}>
-                  {syndromes.map((s) => (
-                    <div key={s.id} className="mono tabular-nums" style={{ fontSize: '0.875rem', display: 'flex', justifyContent: 'space-between' }}>
-                      <span>{s.check}: {s.formula} = {s.substituted} = {s.result}</span>
-                      <span style={{ color: s.passed ? 'var(--status-success-text)' : 'var(--status-danger-text)', fontWeight: 600 }}>
-                        {s.passed ? 'Pass (0)' : 'Fail (1)'}
-                      </span>
-                    </div>
-                  ))}
+              {currentStep === 2 && (
+                <div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                    Computed Parities
+                  </span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.35rem' }}>
+                    {parities.map((p) => (
+                      <div key={p.bit} className="mono tabular-nums" style={{ fontSize: '0.9rem', color: 'var(--bit-parity-text)', fontWeight: 650 }}>
+                        {p.expression}
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ marginTop: '0.65rem', fontSize: '0.9rem', color: 'var(--text-muted)', margin: '0.65rem 0 0 0' }}>
+                    Synthesized 7-bit codeword: <strong className="mono" style={{ color: 'var(--text-main)' }}>0110011</strong>.
+                  </p>
                 </div>
-              </div>
-            )}
+              )}
 
-            {currentStep === 5 && (
-              <div>
-                <Badge variant="warning" style={{ marginBottom: '0.5rem' }}>
-                  Syndrome Translation
-                </Badge>
-                <MathBlock>
-                  Syndrome S₄S₂S₁ = 110₂ = (4·1 + 2·1 + 1·0) = 6₁₀
-                </MathBlock>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-main)', marginTop: '0.5rem' }}>
-                  The failing parity checks S₄ and S₂ directly point to position 6 (d₆) as the flipped coordinate.
-                </p>
-              </div>
-            )}
-
-            {currentStep === 6 && (
-              <div>
-                <Badge variant="success" style={{ marginBottom: '0.5rem' }}>
-                  Correction Applied
-                </Badge>
-                <p style={{ fontSize: '0.9375rem', color: 'var(--text-main)' }}>
-                  Bit at position 6 inverted back: <code>0 → 1</code>. Codeword is restored to <code className="mono">0110011</code>.
-                </p>
-              </div>
-            )}
-
-            {currentStep === 7 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle2 size={18} strokeWidth={2} color="var(--status-success-text)" />
-                  <strong style={{ color: 'var(--status-success-text)', fontSize: '0.9375rem' }}>
-                    Identity Verification Confirmed
-                  </strong>
+              {currentStep === 3 && (
+                <div>
+                  <Badge variant="danger" style={{ marginBottom: '0.65rem' }}>
+                    Noise Corruption Injected
+                  </Badge>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', margin: 0, lineHeight: 1.6 }}>
+                    Bit 6 flipped from <code className="mono">1</code> to <code className="mono">0</code>. The received word transmitted to the decoder is <code className="mono" style={{ color: 'var(--status-danger-text)', fontWeight: 700 }}>0110001</code>.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                  Recomputing syndrome on restored word yields S₄S₂S₁ = 000. Codeword strictly matches the initial transmitted message.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+              )}
+
+              {currentStep === 4 && (
+                <div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                    Syndrome Checks on Received Word
+                  </span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.45rem' }}>
+                    {syndromes.map((s) => (
+                      <div key={s.id} className="mono tabular-nums" style={{ fontSize: '0.9rem', display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0' }}>
+                        <span>{s.check}: {s.formula} = {s.substituted} = {s.result}</span>
+                        <span style={{ color: s.passed ? 'var(--status-success-text)' : 'var(--status-danger-text)', fontWeight: 750 }}>
+                          {s.passed ? 'Pass (0)' : 'Fail (1)'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 5 && (
+                <div>
+                  <Badge variant="warning" style={{ marginBottom: '0.65rem' }}>
+                    Syndrome Address Resolution
+                  </Badge>
+                  <MathBlock>
+                    Syndrome S₄S₂S₁ = 110₂ = (4·1 + 2·1 + 1·0) = 6₁₀
+                  </MathBlock>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', marginTop: '0.65rem', margin: '0.65rem 0 0 0', lineHeight: 1.6 }}>
+                    The failing parity checks S₄ and S₂ directly point to coordinate 6 (d₆) as the flipped bit.
+                  </p>
+                </div>
+              )}
+
+              {currentStep === 6 && (
+                <div>
+                  <Badge variant="success" style={{ marginBottom: '0.65rem' }}>
+                    Autonomous Correction Inversion
+                  </Badge>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', margin: 0, lineHeight: 1.6 }}>
+                    Bit at position 6 inverted back: <code className="mono">0 → 1</code>. Codeword is restored to <code className="mono" style={{ color: 'var(--status-success-text)', fontWeight: 700 }}>0110011</code>.
+                  </p>
+                </div>
+              )}
+
+              {currentStep === 7 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <CheckCircle2 size={20} strokeWidth={2.5} style={{ color: 'var(--status-success-border)' }} />
+                    <strong style={{ color: 'var(--status-success-text)', fontSize: '1rem' }}>
+                      Identity Verification Confirmed
+                    </strong>
+                  </div>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
+                    Recomputing syndrome on restored word yields S₄S₂S₁ = 000. Codeword strictly matches the initial transmitted message.
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </Card>
     </div>
   );
 }
+
+export default DemoPage;

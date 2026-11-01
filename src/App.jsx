@@ -10,7 +10,13 @@ import { QuizPage } from './pages/QuizPage.jsx';
 import { SelfTestPage } from './pages/SelfTestPage.jsx';
 
 export function App() {
-  const [theme, setTheme] = useState('light');
+  // Support theme via URL query param (e.g. ?theme=light) or default to dark
+  const [theme, setTheme] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const qTheme = params.get('theme');
+    if (qTheme === 'light' || qTheme === 'dark') return qTheme;
+    return 'dark'; // Dark-first aesthetic by default
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -44,6 +50,14 @@ export function App() {
 
   return (
     <div className="app-container">
+      {/* Ambient Cyber Aurora & Grid Backdrop */}
+      <div className="ambient-bg" aria-hidden="true">
+        <div className="ambient-grid" />
+        <div className="aurora-blob-1" />
+        <div className="aurora-blob-2" />
+        <div className="aurora-blob-3" />
+      </div>
+
       <Navbar
         activeTab={activeTab}
         onTabChange={handleTabChange}
@@ -55,10 +69,10 @@ export function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
           >
             {activeTab === 'home' && <HomePage onNavigate={handleTabChange} />}
             {activeTab === 'simulator' && <SimulatorPage />}
@@ -73,4 +87,5 @@ export function App() {
     </div>
   );
 }
+
 export default App;

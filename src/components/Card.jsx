@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 export function Card({
   title,
@@ -8,18 +9,13 @@ export function Card({
   className = '',
   style = {},
   headerClassName = '',
-  bodyClassName = ''
+  bodyClassName = '',
+  hoverEffect = false
 }) {
   return (
     <div
-      className={`card-container ${className}`}
+      className={`glass-panel ${hoverEffect ? 'glass-panel-hover' : ''} ${className}`}
       style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-card)',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-sm)',
-        overflow: 'hidden',
-        transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
         ...style
       }}
     >
@@ -27,7 +23,7 @@ export function Card({
         <div
           className={`card-header ${headerClassName}`}
           style={{
-            padding: '1.25rem 1.5rem',
+            padding: '1.25rem 1.75rem',
             borderBottom: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
@@ -38,22 +34,40 @@ export function Card({
         >
           <div>
             {title && (
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0 }}>
+              <h3
+                style={{
+                  fontSize: '1.125rem',
+                  fontWeight: 650,
+                  color: 'var(--text-main)',
+                  letterSpacing: '-0.015em',
+                  margin: 0
+                }}
+              >
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-subtle)', marginTop: '0.25rem', margin: 0 }}>
+              <p
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--text-muted)',
+                  marginTop: '0.25rem',
+                  lineHeight: 1.45,
+                  margin: 0
+                }}
+              >
                 {subtitle}
               </p>
             )}
           </div>
-          {action && <div>{action}</div>}
+          {action && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{action}</div>}
         </div>
       )}
-      <div className={`card-body ${bodyClassName}`} style={{ padding: '1.5rem' }}>
+      <div className={`card-body ${bodyClassName}`} style={{ padding: '1.75rem' }}>
         {children}
       </div>
     </div>
   );
 }
+
+export default Card;

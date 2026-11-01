@@ -17,9 +17,9 @@ export function Codeword({
   const isInteractive = typeof onBitClick === 'function';
 
   const cellSizes = {
-    sm: { width: '42px', height: '48px', fontSize: '1.25rem', padding: '0.25rem' },
-    md: { width: '56px', height: '64px', fontSize: '1.625rem', padding: '0.375rem' },
-    lg: { width: '68px', height: '76px', fontSize: '2rem', padding: '0.5rem' }
+    sm: { height: '52px', fontSize: '1.25rem' },
+    md: { height: '68px', fontSize: '1.65rem' },
+    lg: { height: '80px', fontSize: '2rem' }
   }[size];
 
   return (
@@ -29,7 +29,7 @@ export function Codeword({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '0.75rem',
+        gap: '0.85rem',
         width: '100%',
         ...style
       }}
@@ -39,8 +39,8 @@ export function Codeword({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
-          gap: size === 'sm' ? '0.375rem' : '0.625rem',
-          maxWidth: size === 'lg' ? '600px' : size === 'sm' ? '380px' : '480px',
+          gap: size === 'sm' ? '0.35rem' : size === 'lg' ? '0.85rem' : '0.6rem',
+          maxWidth: size === 'lg' ? '680px' : size === 'sm' ? '420px' : '560px',
           width: '100%'
         }}
         role="group"
@@ -58,20 +58,20 @@ export function Codeword({
           let bg = isParity ? 'var(--bit-parity-bg)' : 'var(--bit-data-bg)';
           let border = isParity ? 'var(--bit-parity-border)' : 'var(--bit-data-border)';
           let text = isParity ? 'var(--bit-parity-text)' : 'var(--bit-data-text)';
-          let badgeText = isParity ? 'Parity' : 'Data';
+          let glow = isParity ? 'var(--bit-parity-glow)' : 'var(--bit-data-glow)';
           let BadgeIcon = isParity ? Diamond : Square;
 
           if (isCorrupt) {
             bg = 'var(--bit-corrupt-bg)';
             border = 'var(--bit-corrupt-border)';
             text = 'var(--bit-corrupt-text)';
-            badgeText = 'Corrupt';
+            glow = 'var(--bit-corrupt-glow)';
             BadgeIcon = AlertCircle;
           } else if (isCorrected) {
             bg = 'var(--bit-corrected-bg)';
             border = 'var(--bit-corrected-border)';
             text = 'var(--bit-corrected-text)';
-            badgeText = 'Corrected';
+            glow = 'var(--bit-corrected-glow)';
             BadgeIcon = Check;
           }
 
@@ -88,28 +88,34 @@ export function Codeword({
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.25rem'
+                gap: '0.35rem',
+                position: 'relative'
               }}
               onMouseEnter={() => onBitHover && onBitHover(pos)}
               onMouseLeave={() => onBitHover && onBitHover(null)}
             >
-              {/* Position Header */}
-              <span
+              {/* Position Header Coordinate */}
+              <div
                 style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.2rem',
                   fontSize: '0.75rem',
-                  fontWeight: 600,
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 700,
                   color: isHighlighted ? 'var(--accent)' : 'var(--text-subtle)',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.2s ease'
                 }}
               >
-                {pos}
-              </span>
+                <span>{pos}</span>
+              </div>
 
-              {/* Bit Cell */}
+              {/* Bit Chip Button / Display */}
               <motion.div
-                whileHover={isInteractive ? { scale: 1.04 } : {}}
-                whileTap={isInteractive ? { scale: 0.96 } : {}}
+                whileHover={isInteractive ? { scale: 1.05, y: -2 } : {}}
+                whileTap={isInteractive ? { scale: 0.94 } : {}}
                 style={{ width: '100%' }}
+                className="bit-chip-cell"
               >
                 <CellElement
                   type={isInteractive ? 'button' : undefined}
@@ -119,46 +125,83 @@ export function Codeword({
                     width: '100%',
                     height: cellSizes.height,
                     background: bg,
-                    border: `2px solid ${isHighlighted ? 'var(--accent)' : border}`,
+                    border: `1.5px solid ${isHighlighted ? 'var(--accent)' : border}`,
                     borderRadius: isParity ? 'var(--radius-lg)' : 'var(--radius-md)',
                     color: text,
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontFamily: 'var(--font-mono)',
                     fontSize: cellSizes.fontSize,
-                    fontWeight: 700,
+                    fontWeight: 800,
                     cursor: isInteractive ? 'pointer' : 'default',
-                    boxShadow: isHighlighted ? '0 0 0 2px var(--accent-light)' : 'var(--shadow-sm)',
+                    boxShadow: isHighlighted ? `0 0 20px var(--accent-glow)` : glow,
+                    backdropFilter: 'blur(10px)',
                     outline: 'none',
-                    transition: 'border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease',
-                    position: 'relative'
+                    transition: 'border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease',
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
                 >
+                  {/* Subtle inner top-edge highlight */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)'
+                    }}
+                  />
+
+                  {/* Bit Value with Flip Scale Entrance */}
                   <motion.span
-                    key={`${pos}-${bitVal}`}
-                    initial={{ scale: 0.85, opacity: 0.5 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.15 }}
+                    key={`${pos}-${bitVal}-${isCorrupt}-${isCorrected}`}
+                    initial={{ scale: 0.7, rotateX: 90, opacity: 0 }}
+                    animate={{ scale: 1, rotateX: 0, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 28 }}
                     className="tabular-nums"
+                    style={{ lineHeight: 1 }}
                   >
                     {bitVal}
                   </motion.span>
+
+                  {/* Corner indicator dot on error */}
+                  {isCorrupt && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: [1, 1.4, 1] }}
+                      transition={{ repeat: Infinity, duration: 1.8 }}
+                      style={{
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: 'var(--accent-rose)',
+                        boxShadow: '0 0 8px var(--accent-rose)'
+                      }}
+                    />
+                  )}
                 </CellElement>
               </motion.div>
 
-              {/* Role Label with Shape Icon */}
+              {/* Role Label with Shape Cue */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.2rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
+                  gap: '0.25rem',
+                  fontSize: '0.72rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 650,
                   color: isHighlighted ? 'var(--accent)' : 'var(--text-muted)'
                 }}
               >
-                <BadgeIcon size={10} strokeWidth={2} />
+                <BadgeIcon size={10} strokeWidth={2.2} />
                 <span>{meta.label}</span>
               </div>
             </div>
@@ -168,3 +211,5 @@ export function Codeword({
     </div>
   );
 }
+
+export default Codeword;

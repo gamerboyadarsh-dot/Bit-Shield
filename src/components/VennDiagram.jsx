@@ -15,10 +15,6 @@ export function VennDiagram({
   const s4Fail = syndromeBits[2] === 1;
 
   // Geometry: 3 overlapping circles
-  // Circle 1 (S1, top): cx=160, cy=105, r=80
-  // Circle 2 (S2, bottom-left): cx=115, cy=185, r=80
-  // Circle 3 (S4, bottom-right): cx=205, cy=185, r=80
-  // Positions centers:
   const positionsCoords = {
     1: { x: 160, y: 65, label: 'p₁', name: 'p1' },   // S1 only (top lobe)
     2: { x: 80,  y: 205, label: 'p₂', name: 'p2' },  // S2 only (left lobe)
@@ -30,7 +26,7 @@ export function VennDiagram({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.85rem' }}>
       <svg
         width={size}
         height={size * 0.9}
@@ -39,15 +35,23 @@ export function VennDiagram({
         xmlns="http://www.w3.org/2000/svg"
         style={{ overflow: 'visible', maxWidth: '100%' }}
       >
+        <defs>
+          <filter id="vennGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
         {/* Circle 1: S1 (Top) */}
         <circle
           cx="160"
           cy="105"
           r="80"
-          fill={s1Fail ? 'rgba(239, 68, 68, 0.12)' : 'rgba(13, 148, 136, 0.08)'}
+          fill={s1Fail ? 'rgba(244, 63, 94, 0.16)' : 'rgba(34, 211, 238, 0.08)'}
           stroke={s1Fail ? 'var(--status-danger-border)' : 'var(--bit-parity-border)'}
           strokeWidth="2"
-          strokeDasharray={s1Fail ? 'none' : '4 2'}
+          strokeDasharray={s1Fail ? 'none' : '4 3'}
+          style={{ transition: 'all 0.3s ease' }}
         />
         <text
           x="160"
@@ -55,8 +59,9 @@ export function VennDiagram({
           textAnchor="middle"
           fill={s1Fail ? 'var(--status-danger-text)' : 'var(--text-main)'}
           fontFamily="var(--font-sans)"
-          fontWeight="700"
-          fontSize="13"
+          fontWeight="750"
+          fontSize="12.5"
+          letterSpacing="-0.01em"
         >
           Check S₁ (r₁ ⊕ r₃ ⊕ r₅ ⊕ r₇) {s1Fail ? '✗ FAIL' : '✓ PASS'}
         </text>
@@ -66,10 +71,11 @@ export function VennDiagram({
           cx="115"
           cy="185"
           r="80"
-          fill={s2Fail ? 'rgba(239, 68, 68, 0.12)' : 'rgba(59, 130, 246, 0.08)'}
+          fill={s2Fail ? 'rgba(244, 63, 94, 0.16)' : 'rgba(99, 102, 241, 0.08)'}
           stroke={s2Fail ? 'var(--status-danger-border)' : 'var(--bit-data-border)'}
           strokeWidth="2"
-          strokeDasharray={s2Fail ? 'none' : '4 2'}
+          strokeDasharray={s2Fail ? 'none' : '4 3'}
+          style={{ transition: 'all 0.3s ease' }}
         />
         <text
           x="40"
@@ -77,8 +83,8 @@ export function VennDiagram({
           textAnchor="start"
           fill={s2Fail ? 'var(--status-danger-text)' : 'var(--text-main)'}
           fontFamily="var(--font-sans)"
-          fontWeight="700"
-          fontSize="13"
+          fontWeight="750"
+          fontSize="12.5"
         >
           S₂ {s2Fail ? '✗' : '✓'}
         </text>
@@ -88,10 +94,11 @@ export function VennDiagram({
           cx="205"
           cy="185"
           r="80"
-          fill={s4Fail ? 'rgba(239, 68, 68, 0.12)' : 'rgba(245, 158, 11, 0.08)'}
-          stroke={s4Fail ? 'var(--status-danger-border)' : 'var(--bit-corrected-border)'}
+          fill={s4Fail ? 'rgba(244, 63, 94, 0.16)' : 'rgba(251, 191, 36, 0.08)'}
+          stroke={s4Fail ? 'var(--status-danger-border)' : 'var(--status-warning-border)'}
           strokeWidth="2"
-          strokeDasharray={s4Fail ? 'none' : '4 2'}
+          strokeDasharray={s4Fail ? 'none' : '4 3'}
+          style={{ transition: 'all 0.3s ease' }}
         />
         <text
           x="280"
@@ -99,8 +106,8 @@ export function VennDiagram({
           textAnchor="end"
           fill={s4Fail ? 'var(--status-danger-text)' : 'var(--text-main)'}
           fontFamily="var(--font-sans)"
-          fontWeight="700"
-          fontSize="13"
+          fontWeight="750"
+          fontSize="12.5"
         >
           S₄ {s4Fail ? '✗' : '✓'}
         </text>
@@ -121,7 +128,7 @@ export function VennDiagram({
               onClick={onBitClick ? () => onBitClick(pos) : undefined}
             >
               <circle
-                r="18"
+                r="19"
                 fill={
                   isCorrupt
                     ? 'var(--bit-corrupt-bg)'
@@ -137,6 +144,7 @@ export function VennDiagram({
                     : 'var(--bit-data-border)'
                 }
                 strokeWidth={isCorrupt ? '2.5' : '1.5'}
+                filter={isCorrupt ? 'url(#vennGlow)' : 'none'}
               />
               <text
                 textAnchor="middle"
@@ -149,17 +157,17 @@ export function VennDiagram({
                     : 'var(--bit-data-text)'
                 }
                 fontFamily="var(--font-mono)"
-                fontWeight="700"
-                fontSize="13"
+                fontWeight="800"
+                fontSize="14"
               >
                 {bitVal}
               </text>
               <text
                 textAnchor="middle"
-                dy="11"
+                dy="12"
                 fill="var(--text-subtle)"
-                fontFamily="var(--font-sans)"
-                fontWeight="600"
+                fontFamily="var(--font-mono)"
+                fontWeight="700"
                 fontSize="9"
               >
                 {coord.label}
@@ -168,9 +176,11 @@ export function VennDiagram({
           );
         })}
       </svg>
-      <span style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>
+      <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)', textAlign: 'center' }}>
         Geometric Venn Parity: Click any region to flip that bit. Failing check circles highlight in red.
       </span>
     </div>
   );
 }
+
+export default VennDiagram;

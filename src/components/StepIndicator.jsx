@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
 export function StepIndicator({
@@ -52,71 +53,78 @@ export function StepIndicator({
                 <div
                   style={{
                     position: 'absolute',
-                    top: '14px',
+                    top: '16px',
                     right: '50%',
                     left: '-50%',
                     height: '2px',
-                    background: stepNum <= currentStep ? 'var(--accent)' : 'var(--border-subtle)',
+                    background: stepNum <= currentStep
+                      ? 'linear-gradient(90deg, #6366f1, #22d3ee)'
+                      : 'var(--border-subtle)',
+                    boxShadow: stepNum <= currentStep ? '0 0 10px rgba(99, 102, 241, 0.5)' : 'none',
                     zIndex: -1,
-                    transition: 'background-color 0.2s ease'
+                    transition: 'background 0.3s ease, box-shadow 0.3s ease'
                   }}
                 />
               )}
 
-              {/* Step Circle */}
+              {/* Step Circle / Badge */}
               <button
                 type="button"
                 onClick={isClickable ? () => onStepClick(stepNum) : undefined}
                 disabled={!isClickable}
                 aria-current={isCurrent ? 'step' : undefined}
-                aria-label={`Step ${stepNum}: ${label}`}
                 style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: 'var(--radius-full)',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: isCompleted
-                    ? 'var(--status-success-bg)'
-                    : isCurrent
-                    ? 'var(--accent)'
-                    : 'var(--bg-card)',
-                  color: isCompleted
-                    ? 'var(--status-success-text)'
-                    : isCurrent
-                    ? 'var(--accent-fg)'
-                    : 'var(--text-subtle)',
-                  border: `2px solid ${
-                    isCompleted
-                      ? 'var(--status-success-border)'
-                      : isCurrent
-                      ? 'var(--accent)'
-                      : 'var(--border-subtle)'
-                  }`,
-                  fontSize: '0.8125rem',
                   fontFamily: 'var(--font-mono)',
-                  fontWeight: 600,
+                  fontSize: '0.8125rem',
+                  fontWeight: 700,
+                  border: isCurrent
+                    ? '2px solid var(--accent-cyan)'
+                    : isCompleted
+                    ? '2px solid var(--status-success-border)'
+                    : '2px solid var(--border-card)',
+                  background: isCurrent
+                    ? 'var(--accent)'
+                    : isCompleted
+                    ? 'var(--status-success-bg)'
+                    : 'var(--bg-card-subtle)',
+                  color: isCurrent
+                    ? '#ffffff'
+                    : isCompleted
+                    ? 'var(--status-success-text)'
+                    : 'var(--text-subtle)',
+                  boxShadow: isCurrent
+                    ? '0 0 16px rgba(99, 102, 241, 0.6)'
+                    : isCompleted
+                    ? '0 0 12px rgba(52, 211, 153, 0.3)'
+                    : 'none',
                   cursor: isClickable ? 'pointer' : 'default',
-                  transition: 'all 0.15s ease',
-                  padding: 0
+                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                  outline: 'none'
                 }}
               >
-                {isCompleted ? <Check size={14} strokeWidth={2.5} /> : stepNum}
+                {isCompleted ? <Check size={16} strokeWidth={2.5} /> : stepNum}
               </button>
 
               {/* Step Label */}
               <span
                 style={{
-                  marginTop: '0.375rem',
-                  fontSize: '0.8125rem',
-                  fontWeight: isCurrent ? 600 : 500,
+                  fontSize: '0.78rem',
+                  fontWeight: isCurrent ? 700 : 500,
                   color: isCurrent
                     ? 'var(--text-main)'
                     : isCompleted
-                    ? 'var(--text-muted)'
+                    ? 'var(--status-success-text)'
                     : 'var(--text-subtle)',
-                  textAlign: 'center'
+                  marginTop: '0.45rem',
+                  textAlign: 'center',
+                  letterSpacing: '-0.01em',
+                  transition: 'color 0.2s ease'
                 }}
               >
                 {label}
@@ -128,3 +136,5 @@ export function StepIndicator({
     </nav>
   );
 }
+
+export default StepIndicator;
